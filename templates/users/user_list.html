@@ -1,0 +1,15 @@
+{% extends 'habitatom/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <ol class="list-group list-group-numbered">
+        {% for user in users %}
+            <li class="list-group-item fade-in fade-in-{{ forloop.counter }}">
+                {{ user.email }}
+            </li>
+        {% empty %}
+            <li class="list-group-item">Пользователей нет.</li>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}

@@ -13,7 +13,7 @@ class Habit(models.Model):
     time = models.TimeField()
     action = models.CharField(max_length=255)
     is_pleasant = models.BooleanField(default=False, help_text="Приятная привычка?")
-    last_performed = models.DateField(blank=True, null=True)
+    last_performed = models.DateField(blank=True, null=True, help_text="Дата последнего выполнения")
     related_habit = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL, related_name='linked_habits',
         help_text="Связанная полезная привычка"
@@ -31,7 +31,7 @@ class Habit(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is not None:
             if self.last_performed:
-                time_taken = (timezone.now() - self.last_performed).total_seconds()
+                time_taken = (timezone.now() - self.last_performed).total_seconds() / 60
                 if time_taken > 120:
                     raise ValidationError("Время выполнения не должно превышать 120 секунд.")
 

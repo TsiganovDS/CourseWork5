@@ -1,0 +1,25 @@
+{% extends 'HabitAtom/base.html' %}
+{% block content %}
+  <h2>{{ habit.name }}</h2>
+  <p><strong>Описание:</strong> {{ habit.description }}</p>
+  <ul class="list-group mb-3">
+    <li class="list-group-item"><strong>Частота:</strong> {{ habit.frequency }}</li>
+    <li class="list-group-item"><strong>Последний раз выполнено:</strong>
+      {% if habit.last_performed %}
+        {{ habit.last_performed|date:"d.m.Y H:i" }}
+      {% else %}
+        Ещё ни разу не выполнено
+      {% endif %}
+    </li>
+    <li class="list-group-item"><strong>Активна:</strong>
+      {% if habit.is_active %}
+        ✅
+      {% else %}
+        ❌
+      {% endif %}
+    </li>
+  </ul>
+  <a href="{% url 'habit_edit' habit.pk %}" class="btn btn-primary">Редактировать</a>
+  <a href="{% url 'habit_confirm_delete' habit.pk %}" class="btn btn-danger">Удалить</a>
+  <a href="{% url 'habit_list' %}" class="btn btn-secondary">Назад к списку</a>
+{% endblock %}
