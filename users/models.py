@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -32,9 +33,16 @@ class User(AbstractUser):
     email = models.EmailField(
         unique=True, verbose_name="email", help_text="Email address"
     )
+    telegram_id = models.CharField(
+        max_length=32,
+        blank=True,
+        null=True,
+        verbose_name="Telegram ID",
+        help_text="ID пользователя в Telegram",
+    )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["telegram_id"]
 
     objects = UserManager()
 

@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+
+from celery.schedules import crontab
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -30,6 +32,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django_celery_beat",
+    "drf_yasg",
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
@@ -58,7 +62,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -152,10 +156,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTH_USER_MODEL = "users.User"
 
-LOGIN_URL = '/api/users/login/'
-LOGOUT_URL = '/api/users/logout/'
-LOGIN_REDIRECT_URL = '/api/users/'
-LOGOUT_REDIRECT_URL = '/api/users/login/'
+LOGIN_URL = "/api/users/login/"
+LOGOUT_URL = "/api/users/logout/"
+LOGIN_REDIRECT_URL = "/api/users/"
+LOGOUT_REDIRECT_URL = "/api/users/login/"
 
 SITE_ID = 1
 
@@ -170,12 +174,25 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_BROKER_URL = "redis://localhost:6379/0"
 
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
-CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TIMEZONE = TIME_ZONE
 
 CELERY_TASK_TRACK_STARTED = True
 
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+TELEGRAM_URL = "https://api.telegram.org/bot"
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+CELERY_BEAT_SCHEDULE = {
+    "check_and_send_habit_reminders": {
+        "task": "habitatom.tasks.check_and_send_habit_reminders",
+        "schedule": crontab(minute="*"),
+    },
+}

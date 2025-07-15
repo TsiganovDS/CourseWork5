@@ -3,7 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = '__all__'
+        fields = "__all__"
