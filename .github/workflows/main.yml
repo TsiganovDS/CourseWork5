@@ -1,0 +1,77 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  test_and_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Установка Python и зависимостей
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Запуск тестов
+      - name: Run tests
+        run: |
+          pytest
+
+      # Линтинг кода
+      - name: Lint code base
+        run: |
+          flake8 .
+
+  build_docker_image:
+    needs: test_and_lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Логика сборки Docker-образа
+      - name: Build Docker Image
+        run: |
+          docker build -t your-docker-image-name .
+
+      # Проверяем успешность сборки
+      - name: Check Docker Image
+        run: |
+          docker images | grep your-docker-image-name
+
+  deploy_to_server:
+    needs: build_docker_image
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v3
+
+      # Установка SSH ключей для деплоя
+      - name: Add SSH Key for deployment
+        uses: ssh-add-action/sshtools@master
+        with:
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
+      # Деплой Docker-образа на сервер
+      - name: Deploy to Server
+        run: |
+          ssh user@server_ip << EOF
+            cd path/to/project/directory
+            git pull origin develop
+            docker stop $(docker ps -q) || true
+            docker rmi $(docker images -f "dangling=true" -q) || true
+            docker compose up -d
+          EOF
