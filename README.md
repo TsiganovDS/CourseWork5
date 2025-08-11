@@ -19,29 +19,66 @@
 ### GitHub Actions (CI/CD)
 ### Yandex Cloud (деплой)
 ##  Установка и запуск проекта локально (Docker)
-### 1. Клонируй репозиторий:
+### 1. Клонируйте репозиторий:
 #### git clone https://github.com/TsiganovDS/CourseWork5
 #### cd CourseWork5
-### 2. Создай .env на основе шаблона:
-#### SECRET_KEY=укажи_свой_секретный_ключ
+### 2. Создайте .env на основе шаблона:
+#### SECRET_KEY=укажите_свой_секретный_ключ
 #### DEBUG=True
 #### ALLOWED_HOSTS=127.0.0.1,localhost
-
-#### NAME=postgres
-#### USER=postgres
-#### PASSWORD=postgres
+#### NAME=
+#### USER=
+#### PASSWORD=
 #### HOST=
 #### PORT=5432
-
 #### CELERY_BROKER_URL=redis://redis:6379/0
-### 3. Собери и запусти проект:
+### 3. Соберите и запустите проект:
 #### docker compose up --build
-### 4. Открой в браузере:
-#### http://localhost
+### 4. Откройте в браузере:
+#### http://127.0.0.1:8000
 
 ## CI/CD
-### Настроен GitHub Actions workflow .github/workflows/deploy.yml
-#### Автоматически запускается:
-#### при push в ветку develop
-#### выполняет тесты и линтинг
-#### при успехе — деплой на сервер через SSH
+### Настроен GitHub Actions workflow .github/workflows/main.yml
+### Перед началом установки убедитесь, что ваш сервер соответствует следующим требованиям:
+
+#### - Операционная система: Linux (Ubuntu, Debian и т.п.)
+#### - Установлен Docker Engine >= v20.xx (установите последнюю версию)
+#### - Установлен Docker Compose >= v2.xx (желательно последней версии)
+#### - Открытые порты:
+####  - TCP порт 22 (для SSH-доступа)
+####  - TCP порт 80 (HTTP трафик)
+####  - TCP порт 443 (HTTPS трафик)
+
+## 1. Подключение к серверу через SSH
+### ssh -l test 158.160.178.71
+## 2. Копирование файлов на сервер
+### Скопируйте архив проекта на сервер или создайте репозиторий и загрузите проект через Git:
+### git clone https://github.com/TsiganovDS/CourseWork5
+### cd CourseWork5
+## 3.  Подготовка переменной окружения (.env)
+### Создайте файл .env на сервере и заполните его необходимыми параметрами:
+#### SECRET_KEY=your_secret_key_here
+#### DEBUG=False
+#### ALLOWED_HOSTS=your_domain_or_IP
+#### DB_ENGINE=django.db.backends.postgresql
+#### NAME=database_name
+#### USER=database_user
+#### PASSWORD=database_password
+#### HOST=db_host
+#### PORT=5432
+#### REDIS_URL=redis://redis:6379/0
+#### CELERY_BROKER_URL=redis://redis:6379/0
+#### TELEGRAM_TOKEN=telegram_bot_token
+## 4.  Первый запуск
+### Перед первым запуском выполните инициализацию базы данных и миграцию моделей:
+#### docker compose up -d --build
+###  Затем проверьте состояние контейнеров:
+#### docker ps
+## 5. Обновление проекта
+###  После внесения изменений выполните обновление Docker-образов и перезагрузите контейнеры:
+#### docker compose pull
+#### docker compose up -d --remove-orphans
+
+
+
+

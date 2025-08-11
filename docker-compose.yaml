@@ -1,13 +1,13 @@
-version: '3.12'
+version: '3.9'
 services:
     web:
         container_name: CourseWork5-web
-        build: ./backend
-        command: bash -c "python manage.py collect_static --no-input && python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+        build: .
+        command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
         volumes:
             - ./backend:/code
-            - static_volume:/code/staticfiles
-            - media_volume:/code/media
+            - static_volume:/usr/share/nginx/html/static
+            - media_volume:/usr/share/nginx/html/media
         expose:
             - 8000
         env_file:
@@ -18,7 +18,7 @@ services:
 
     db:
         image: postgres:16
-        container_name: myproject-db
+        container_name: CourseWork5-db
         volumes:
             - pgdata:/var/lib/postgresql/data
         env_file:
@@ -26,16 +26,16 @@ services:
 
     cache:
         image: redis:alpine
-        container_name: myproject-cache
+        container_name: CourseWork5-cache
         ports:
             - "6379:6379"
 
     celery:
         container_name: CourseWork5-celery
-        build: ./backend
+        build: .
         command: bash -c "celery -A project worker -l info"
         volumes:
-            - ./backend:/code
+            - ./:/code
         env_file:
             - .env
         depends_on:
@@ -43,30 +43,23 @@ services:
 
     celery-beat:
         container_name: CourseWork5-celery-beat
-        build: ./backend
+        build: .
         command: bash -c "celery -A project beat -l info"
         volumes:
-            - ./backend:/code
+            - ./:/code
         env_file:
             - .env
         depends_on:
             - cache
 
     frontend:
-        build: ./frontend
-        container_name: myproject-frontend
+        build: .
+        container_name: CourseWork5-frontend
         command: npm start
-        ports:
-            - "3000:3000"
-        volumes:
-            - ./frontend:/app
-        working_dir: "/app"
-        depends_on:
-            - web
 
     nginx:
         container_name: CourseWork5-nginx
-        build: ./nginx
+        build: .
         ports:
             - "80:80"
         volumes:

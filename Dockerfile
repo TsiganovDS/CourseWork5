@@ -1,23 +1,16 @@
-# Указываем базовый образ
-FROM python:3.10
+# Используем минималистичный образ Python
+FROM python:3.11-slim-bullseye as base
 
-# Устанавливаем рабочую директорию в контейнере
-WORKDIR /app
+# Настраиваем рабочую директорию
+WORKDIR /code
 
+# Клонируем исходники проекта
+COPY . /code
 
-RUN apt-get update && \\
-    apt-get install -y build-essential libpq-dev && \\
-    rm -rf /var/lib/apt/lists/*
-
-# Копируем файл с зависимостями и устанавливаем их
-COPY requirements.txt ./
+# Устанавливаем необходимые зависимости
+RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-
-# Открываем порт 8000 для взаимодействия с приложением
-EXPOSE 8000
-
-COPY . .
-
-# Определяем команду для запуска приложения
+# По умолчанию запускаем простейшую команду
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
