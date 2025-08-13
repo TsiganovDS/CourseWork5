@@ -4,6 +4,7 @@ FROM python:3.11-slim-bullseye as base
 # Настраиваем рабочую директорию
 WORKDIR /code
 
+
 # Клонируем исходники проекта
 COPY . /code
 
