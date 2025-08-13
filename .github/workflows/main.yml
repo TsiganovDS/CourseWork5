@@ -21,7 +21,7 @@ jobs:
 
       - name: Pull latest Docker image
         run: |
-          docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+          docker login -u "${DOCKER_USERNAME}" --password="${DOCKER_PASSWORD}"
           docker pull ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
 
       - name: Configure SSH access
