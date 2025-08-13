@@ -18,6 +18,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+
       - name: Pull latest Docker image
         run: |
           docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
