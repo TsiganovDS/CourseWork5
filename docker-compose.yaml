@@ -1,7 +1,7 @@
 version: '3.9'
 services:
     web:
-        container_name: CourseWork5-web
+        container_name: coursework5-web
         build: .
         command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
         volumes:
@@ -18,7 +18,7 @@ services:
 
     db:
         image: postgres:16
-        container_name: CourseWork5-db
+        container_name: coursework5-db
         volumes:
             - pgdata:/var/lib/postgresql/data
         env_file:
@@ -26,12 +26,12 @@ services:
 
     cache:
         image: redis:alpine
-        container_name: CourseWork5-cache
+        container_name: coursework5-cache
         ports:
             - "6379:6379"
 
     celery:
-        container_name: CourseWork5-celery
+        container_name: coursework5-celery
         build: .
         command: bash -c "celery -A project worker -l info"
         volumes:
@@ -42,7 +42,7 @@ services:
             - cache
 
     celery-beat:
-        container_name: CourseWork5-celery-beat
+        container_name: coursework5-celery-beat
         build: .
         command: bash -c "celery -A project beat -l info"
         volumes:
@@ -54,11 +54,11 @@ services:
 
     frontend:
         build: .
-        container_name: CourseWork5-frontend
+        container_name: coursework5-frontend
         command: npm start
 
     nginx:
-        container_name: CourseWork5-nginx
+        container_name: coursework5-nginx
         build: .
         ports:
             - "80:80"
