@@ -20,8 +20,8 @@
 ### Yandex Cloud (деплой)
 ##  Установка и запуск проекта локально (Docker)
 ### 1. Клонируйте репозиторий:
-#### git clone https://github.com/TsiganovDS/CourseWork5
-#### cd CourseWork5
+#### git clone https://github.com/TsiganovDS/coursework5
+#### cd coursework5
 ### 2. Создайте .env на основе шаблона:
 #### SECRET_KEY=укажите_свой_секретный_ключ
 #### DEBUG=True
@@ -53,8 +53,8 @@
 ### ssh -l test 158.160.146.211
 ## 2. Копирование файлов на сервер
 ### Скопируйте архив проекта на сервер или создайте репозиторий и загрузите проект через Git:
-### git clone https://github.com/TsiganovDS/CourseWork5
-### cd CourseWork5
+### git clone https://github.com/TsiganovDS/coursework5
+### cd coursework5
 ## 3.  Подготовка переменной окружения (.env)
 ### Создайте файл .env на сервере и заполните его необходимыми параметрами:
 #### SECRET_KEY=your_secret_key_here
