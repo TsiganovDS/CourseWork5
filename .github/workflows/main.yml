@@ -31,6 +31,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no test@158.160.192.100 <<EOF
             cd /home/test/coursework5
-            docker-compose pull web:
-            docker-compose up -d --force-recreate web:
+            docker-compose pull web
+            docker-compose up -d --force-recreate web
           EOF
