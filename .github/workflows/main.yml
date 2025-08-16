@@ -18,10 +18,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-
       - name: Pull latest Docker image
         run: |
-          docker login -u "${DOCKER_USERNAME}" --password="${DOCKER_PASSWORD}"
           docker pull ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
 
       - name: Configure SSH access
@@ -31,9 +29,8 @@ jobs:
 
       - name: Run deployment script via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no user@server_ip <<EOF
-            cd /path/to/project/directory
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d --remove-orphans
+          ssh -o StrictHostKeyChecking=no test@158.160.192.100 <<EOF
+            cd /home/test/coursework5
+            docker-compose pull web
+            docker-compose up -d --force-recreate web
           EOF
