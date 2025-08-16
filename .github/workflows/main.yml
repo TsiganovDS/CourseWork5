@@ -30,7 +30,7 @@ jobs:
       - name: Run deployment script via SSH
         run: |
           ssh -o StrictHostKeyChecking=no test@158.160.192.100 <<EOF
-            cd /path/to/project/directory
-            docker-compose pull app_service_name
-            docker-compose up -d --force-recreate app_service_name
+            cd /home/test/coursework5
+            docker-compose pull web:
+            docker-compose up -d --force-recreate web:
           EOF
