@@ -20,7 +20,6 @@ jobs:
 
       - name: Pull latest Docker image
         run: |
-          docker login -u "${DOCKER_USERNAME}" "${DOCKER_PASSWORD}" --password-stdin
           docker pull ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
 
       - name: Configure SSH access
@@ -32,7 +31,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no user@server_ip <<EOF
             cd /path/to/project/directory
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d --remove-orphans
+            docker-compose pull app_service_name
+            docker-compose up -d --force-recreate app_service_name
           EOF
