@@ -53,8 +53,8 @@
 ### ssh -l test 158.160.192.100
 ## 2. Копирование файлов на сервер
 ### Скопируйте архив проекта на сервер или создайте репозиторий и загрузите проект через Git:
-### git clone https://github.com/TsiganovDS/CourseWork5
-### cd CourseWork5
+### git clone https://github.com/TsiganovDS/coursework5
+### cd coursework5
 ## 3.  Подготовка переменной окружения (.env)
 ### Создайте файл .env на сервере и заполните его необходимыми параметрами:
 #### SSH_PRIVATE_KEY=для доступа к серверу по SSH
