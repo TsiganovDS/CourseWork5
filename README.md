@@ -20,8 +20,8 @@
 ### Yandex Cloud (деплой)
 ##  Установка и запуск проекта локально (Docker)
 ### 1. Клонируйте репозиторий:
-#### git clone https://github.com/TsiganovDS/CourseWork5
-#### cd CourseWork5
+#### git clone https://github.com/TsiganovDS/coursework5
+#### cd coursework5
 ### 2. Создайте .env на основе шаблона:
 #### SECRET_KEY=укажите_свой_секретный_ключ
 #### DEBUG=True
@@ -35,7 +35,7 @@
 ### 3. Соберите и запустите проект:
 #### docker compose up --build
 ### 4. Откройте в браузере:
-#### http://127.0.0.1:8000
+#### http://158.160.192.100
 
 ## CI/CD
 ### Настроен GitHub Actions workflow .github/workflows/main.yml
@@ -50,14 +50,15 @@
 ####  - TCP порт 443 (HTTPS трафик)
 
 ## 1. Подключение к серверу через SSH
-### ssh -l test 158.160.194.238
+### ssh -l test 158.160.192.100
 ## 2. Копирование файлов на сервер
 ### Скопируйте архив проекта на сервер или создайте репозиторий и загрузите проект через Git:
 ### git clone https://github.com/TsiganovDS/CourseWork5
 ### cd CourseWork5
 ## 3.  Подготовка переменной окружения (.env)
 ### Создайте файл .env на сервере и заполните его необходимыми параметрами:
-#### SECRET_KEY=your_secret_key_here
+#### SSH_PRIVATE_KEY=для доступа к серверу по SSH
+#### SECRET_KEY=database_key
 #### DEBUG=False
 #### ALLOWED_HOSTS=your_domain_or_IP
 #### DB_ENGINE=django.db.backends.postgresql
@@ -78,7 +79,3 @@
 ###  После внесения изменений выполните обновление Docker-образов и перезагрузите контейнеры:
 #### docker compose pull
 #### docker compose up -d --remove-orphans
-
-
-
-
